@@ -13,6 +13,8 @@ Vagrant.configure("2") do |config|
   #    :mode => "bridge",
   #    :type => "bridge"
 
+  # Disable the current vagrant mount and enable '..' instead.
+  config.vm.synced_folder ".", "/vagrant/", disabled: true
   config.vm.synced_folder "..", "/vagrant/"
 
   # Provision using shell
