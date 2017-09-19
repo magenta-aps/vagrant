@@ -4,14 +4,10 @@ Vagrant
 Project for running Ansible, inside a newly created virtual machine.
 
 For the UNIX example, see [here](https://github.com/magenta-aps/vagrant-ansible-example)
+
 For the Windows example, see [here](https://github.com/magenta-aps/vagrant-ansible-example-windows)
 
-## Installation:
-
-Clone this project:
-
-    git clone https://github.com/magenta-aps/vagrant-ansible-example.git
-
+## Platform specific setup:
 
 ### Ubuntu Xenial (16.04)
 
@@ -27,7 +23,6 @@ Additionally a hypervisor must be installed, the default is VirtualBox:
     
 Other hypervisors can be installed instead, refer to the FAQ for this.
 
-
 ### MacOS Sierra (10.12.3)
 
 Vagrant can be installed using the [Homebrew](https://brew.sh/) CLI.
@@ -39,7 +34,6 @@ To install Vagrant and Virtualbox, add the 'cask' tap to homebrew and run:
     brew tap caskroom/cask
     brew install caskroom/cask/virtualbox
     brew install caskroom/cask/vagrant
-
 
 ### Windows 10 Home
 
@@ -140,7 +134,7 @@ Could be related to using VirtualBox. When using Vagrant with VirtualBox, you'll
 Also, try to forward ports in your `Vagrantfile` by adding this line:
 
     config.vm.network "forwarded_port", guest: 8000, host: 8000
-    
+
 
 ### What if I don't like VirtualBox?
 
