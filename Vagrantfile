@@ -17,14 +17,16 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 8000, host: 8000
 
   # Disable the current vagrant mount and enable '..' instead.
-  config.vm.synced_folder ".", "/vagrant/", disabled: true
-  config.vm.synced_folder "..", "/vagrant/"
+  # Note: There cannot be a slash after '/vagrant' as in '/vagrant/'
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+  config.vm.synced_folder "..", "/vagrant"
 
   # Provision using shell
   # ---------------------
   # Installs Ansible inside container, and runs it locally
   if provisioner == 'shell' then
-      config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
+      # TODO: Activating this breaks vagrant ssh -c '...'
+      #config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
       config.vm.provision :shell do |shell|
           shell.path = "provision.sh"
           shell.args = playbook
