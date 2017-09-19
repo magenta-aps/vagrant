@@ -2,6 +2,7 @@
 # vi: set ft=ruby :
 
 provisioner=(ENV['PROVISIONER'] || 'shell')
+playbook=(ENV['PLAYBOOK'] || 'default.yml')
 
 Vagrant.configure("2") do |config|
   # TODO: Ubuntu Xenial image
@@ -19,8 +20,10 @@ Vagrant.configure("2") do |config|
   # Installs Ansible inside container, and runs it locally
   if provisioner == 'shell' then
       config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
-      config.vm.provision "shell",
-          inline: "/bin/bash /vagrant/vagrant/provision.sh"
+      config.vm.provision :shell do |shell|
+          shell.path = "provision.sh"
+          shell.args = playbook
+      end
   # Provision using ansible
   # -----------------------
   # Requires a local installation of ansible
@@ -29,7 +32,7 @@ Vagrant.configure("2") do |config|
       ENV['ANSIBLE_ROLES_PATH'] = "#{vagrant_root}/../ansible/roles"
 
       config.vm.provision :ansible do |ansible|
-        ansible.playbook = "../ansible/playbooks/test.yml"
+        ansible.playbook = "../ansible/playbooks/" + playbook
         ansible.verbose = "vv"
       end
   # Any other privioners are errors.

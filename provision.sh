@@ -1,5 +1,7 @@
 #!/bin/bash
 
+PLAYBOOK=$1
+
 # Install Ansible
 apt-get update
 apt-get install -y ansible
@@ -8,4 +10,4 @@ apt-get install -y ansible
 cd /vagrant/
 ANSIBLE_ROLES_PATH=/vagrant/ansible/roles/ \
 PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ansible-playbook --timeout=30 \
-    -vv -i "localhost," -c local ansible/playbooks/test.yml
+    -vv -i "localhost," -c local ansible/playbooks/$PLAYBOOK
