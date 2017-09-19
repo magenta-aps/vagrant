@@ -12,6 +12,9 @@ Vagrant.configure("2") do |config|
   #    :dev => "virbr0",
   #    :mode => "bridge",
   #    :type => "bridge"
+  
+  # Always forward 8000-->8000
+  config.vm.network "forwarded_port", guest: 8000, host: 8000
 
   # Disable the current vagrant mount and enable '..' instead.
   config.vm.synced_folder ".", "/vagrant/", disabled: true
