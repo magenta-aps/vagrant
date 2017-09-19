@@ -76,7 +76,7 @@ If you wish to rerun the provisioning (Shell/Ansible), it can be done using:
     vagrant provision
 
 
-## Running specific playbooks:
+### Running specific playbooks:
 
 By default the `default.yml` playbook is run, but any playbook can be run, by
 changing the `PLAYBOOK` environmental variable before running `vagrant provision`,
@@ -85,7 +85,7 @@ as done by:
     PLAYBOOK=demo.yml vagrant provision
 
 
-## Speeding up provisioning:
+### Speeding up provisioning:
 
 At the moment provisioning is done using Ansible inside the guest container.
 This is to simply the setup process for users, but does incur a tiny overhead.
@@ -100,7 +100,7 @@ This does however require Ansible to be installed on the host machine.
 See below for how to install Ansible on your system.
 
 
-### Ubuntu Xenial (16.04)
+#### Ubuntu Xenial (16.04)
 
 To install Ansible, run:
 
@@ -108,7 +108,7 @@ To install Ansible, run:
     apt-get install ansible
 
  
-### MacOS Sierra (10.12.3)
+#### MacOS Sierra (10.12.3)
 
 Ansible can be installed using the [Homebrew](https://brew.sh/) CLI.
 
@@ -117,7 +117,7 @@ To install Ansible, run:
     brew install ansible
 
 
-### Windows 10 Home
+#### Windows 10 Home
 
 ***Windows is not officially supported for the control machine.***
 
