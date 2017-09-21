@@ -3,6 +3,12 @@
 
 provisioner=(ENV['PROVISIONER'] || 'shell')
 playbook=(ENV['PLAYBOOK'] || 'default.yml')
+migrate_disk=(ENV['MIGRATE_DISK'])
+
+if migrate_disk && Integer(migrate_disk) < 10 then
+  raise Vagrant::Errors::VagrantError.new,
+      "Error: New disk size must be larger than 10GB!"
+end
 
 Vagrant.configure("2") do |config|
   # TODO: Ubuntu Xenial image
@@ -20,6 +26,23 @@ Vagrant.configure("2") do |config|
   # Note: There cannot be a slash after '/vagrant' as in '/vagrant/'
   config.vm.synced_folder ".", "/vagrant", disabled: true
   config.vm.synced_folder "..", "/vagrant"
+
+  # Migrate disk
+  # ------------
+  # If on VirtualBox, and requested to, migrate to a bigger disk.
+  # TODO: Detect VirtualBox
+  if migrate_disk then
+      config.disksize.size = migrate_disk + 'GB'
+      config.vm.provision :shell do |shell|
+          shell.path = "migrate1.sh"
+      end
+
+      config.vm.provision :reload
+
+      config.vm.provision :shell do |shell|
+          shell.path = "migrate2.sh"
+      end
+  end
 
   # Provision using shell
   # ---------------------
