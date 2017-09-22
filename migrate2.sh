@@ -1,5 +1,17 @@
 #!/bin/bash
 
+SCRIPT_SUM=$(md5sum $0 | cut -f1 -d' ')
+VALIDATION_ARG=$1
+if [ "$VALIDATION_ARG" != "$SCRIPT_SUM" ]; then
+    echo "Script called without the script sum commandline argument!"
+    echo "This script should not be called directly by the host."
+    echo "Calling this script from the host, will destroy your computer."
+    echo "Please don't call this with script sum as a commandline argument!"
+    echo ""
+    echo "Consider yourself warned!"
+    exit 1
+fi
+
 echo ""
 echo "--------------------"
 echo "Nuking old partition"
