@@ -27,10 +27,41 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder ".", "/vagrant", disabled: true
   config.vm.synced_folder "..", "/vagrant"
 
+  # Provision
+  # ---------
+  # Primarily uses shell-->ansible, but can use ansible directly
+  ansible = lambda do |config|
+      # Provision using shell
+      # ---------------------
+      # Installs Ansible inside container, and runs it locally
+      if provisioner == 'shell' then
+          # TODO: Activating this breaks vagrant ssh -c '...'
+          #config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
+          config.vm.provision :shell do |shell|
+              shell.path = "provision.sh"
+              shell.args = playbook
+          end
+      # Provision using ansible
+      # -----------------------
+      # Requires a local installation of ansible
+      elsif provisioner == 'ansible' then
+          vagrant_root = File.dirname(__FILE__)
+          ENV['ANSIBLE_ROLES_PATH'] = "#{vagrant_root}/../ansible/roles"
+
+          config.vm.provision :ansible do |ansible|
+            ansible.playbook = "../ansible/playbooks/" + playbook
+            ansible.verbose = "vv"
+          end
+      # Any other privioners are errors.
+      else
+          raise Vagrant::Errors::VagrantError.new,
+              "Error: Unknown provisioner selected (" + provisioner + ")!"
+      end
+   end
+
   # Migrate disk
   # ------------
   # If on VirtualBox, and requested to, migrate to a bigger disk.
-  # TODO: Detect VirtualBox
   migrate = lambda do |config|
       if migrate_disk then
           config.disksize.size = migrate_disk + 'GB'
@@ -49,37 +80,12 @@ Vagrant.configure("2") do |config|
       end
   end
 
-  # Migrate disk
-  # ------------
-  # If on VirtualBox, and requested to, migrate to a bigger disk.
   config.vm.provider :virtualbox do |_, override|
       migrate.call override
+      ansible.call override
   end
 
-  # Provision using shell
-  # ---------------------
-  # Installs Ansible inside container, and runs it locally
-  if provisioner == 'shell' then
-      # TODO: Activating this breaks vagrant ssh -c '...'
-      #config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
-      config.vm.provision :shell do |shell|
-          shell.path = "provision.sh"
-          shell.args = playbook
-      end
-  # Provision using ansible
-  # -----------------------
-  # Requires a local installation of ansible
-  elsif provisioner == 'ansible' then
-      vagrant_root = File.dirname(__FILE__)
-      ENV['ANSIBLE_ROLES_PATH'] = "#{vagrant_root}/../ansible/roles"
-
-      config.vm.provision :ansible do |ansible|
-        ansible.playbook = "../ansible/playbooks/" + playbook
-        ansible.verbose = "vv"
-      end
-  # Any other privioners are errors.
-  else
-      raise Vagrant::Errors::VagrantError.new,
-          "Error: Unknown provisioner selected (" + provisioner + ")!"
+  config.vm.provider :lxc do |_, override|
+      ansible.call override
   end
 end
