@@ -35,7 +35,7 @@ Vagrant.configure("2") do |config|
       config.disksize.size = migrate_disk + 'GB'
       config.vm.provision :shell do |shell|
           shell.path = "migrate1.sh"
-          shell.args = "676ff34324629dd46fe10c6614dda7be"
+          shell.args = "d522a172be425b05f160e4a48c932b64"
       end
 
       config.vm.provision :reload
