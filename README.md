@@ -88,7 +88,7 @@ machine, by installing the following two plugins:
 And calling the `vagrant up` command, with the `MIGRATE_DISK` environmental
 variable. The variable holds the new size of the disk, in gigabytes;
 
-    MIGRATE_DISK=50 vagrant provision
+    MIGRATE_DISK=50 vagrant up
 
 Migrating disks should not be necessary on LXC as it utilizes all available
 disk on the host.
