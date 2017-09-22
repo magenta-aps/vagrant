@@ -62,7 +62,6 @@ No other hypervisors are supported.
 Not supported, please figure out a solution yourself, and add it via. a pull
 request.
 
-
 ## Usage:
 
 Simply run `vagrant up`, and wait for the machine to be available.
@@ -74,6 +73,25 @@ After this, the machine can be accessed over ssh, using:
 If you wish to rerun the provisioning (Shell/Ansible), it can be done using:
 
     vagrant provision
+
+
+### Increasing disk space:
+
+When utilizing the VirtualBox provider, a tiny amount of diskspace is provided.
+Namely about 8GB, this is to keep disk usage to a minimum, when it is not
+required. For cases where this does not suffice, it is possible to get a larger
+machine, by installing the following two plugins:
+
+    vagrant plugin install vagrant-reload
+    vagrant plugin install vagrant-disksize
+
+And calling the `vagrant up` command, with the `MIGRATE_DISK` environmental
+variable. The variable holds the new size of the disk, in gigabytes;
+
+    MIGRATE_DISK=50 vagrant up
+
+Migrating disks should not be necessary on LXC as it utilizes all available
+disk on the host.
 
 
 ### Running specific playbooks:
