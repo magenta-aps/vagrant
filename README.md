@@ -117,7 +117,6 @@ to do this, simply set the `PROVISIONER` environmental variable before running
 This does however require Ansible to be installed on the host machine.
 See below for how to install Ansible on your system.
 
-
 #### Ubuntu Xenial (16.04)
 
 To install Ansible, run:

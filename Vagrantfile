@@ -49,6 +49,8 @@ Vagrant.configure("2") do |config|
           ENV['ANSIBLE_ROLES_PATH'] = "#{vagrant_root}/../ansible/roles"
 
           config.vm.provision :ansible do |ansible|
+            ansible.galaxy_role_file = '../ansible/requirements.yml'
+            ansible.galaxy_roles_path = ENV['ANSIBLE_ROLES_PATH'] 
             ansible.playbook = "../ansible/playbooks/" + playbook
             ansible.verbose = "vv"
           end
