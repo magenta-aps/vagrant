@@ -15,7 +15,7 @@ if ! [ -x "$(command -v ansible)" ]; then
 fi
 
 # Install git (if required)
-if ! [ -x "$(command -v ansible)" ]; then
+if ! [ -x "$(command -v git)" ]; then
     apt-get install -y git
 fi
 
