@@ -1,7 +1,12 @@
 #!/bin/bash
+set -e
+set -x
 
-wget https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub \
-    -O ~/.ssh/authorized_keys
-chmod 700 ~/.ssh
-chmod 600 ~/.ssh/authorized_keys
-chown -R vagrant:vagrant ~/.ssh
+rm -f /home/vagrant/.ssh/authorized_keys
+
+wget --no-check-certificate \
+    https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub \
+    -O /home/vagrant/.ssh/authorized_keys
+chmod 700 /home/.ssh
+chmod 600 /home/.ssh/authorized_keys
+chown -R vagrant:vagrant /home/.ssh
