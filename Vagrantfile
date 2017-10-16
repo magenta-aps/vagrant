@@ -93,4 +93,9 @@ Vagrant.configure("2") do |config|
   config.vm.provider :lxc do |_, override|
       ansible.call override
   end
+
+  config.vm.provider :lxc do |lxc|
+    # Required to boot nested containers
+    lxc.customize 'aa_profile', 'unconfined'
+  end
 end
