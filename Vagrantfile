@@ -50,6 +50,7 @@ Vagrant.configure("2") do |config|
       elsif provisioner == 'ansible' then
           vagrant_root = File.dirname(__FILE__)
           ENV['ANSIBLE_ROLES_PATH'] = "#{vagrant_root}/../ansible/roles"
+          ENV['ANSIBLE_STDOUT_CALLBACK'] = 'debug'
 
           config.vm.provision :ansible do |ansible|
             ansible.galaxy_role_file = '../ansible/requirements.yml'
