@@ -23,7 +23,7 @@ Vagrant.configure("2") do |config|
   #    :type => "bridge"
   
   # Always forward 8000-->8000
-  # config.vm.network "forwarded_port", guest: 8000, host: 8000
+  config.vm.network "forwarded_port", guest: 8000, host: 8000
 
   # Disable the current vagrant mount and enable '..' instead.
   # Note: There cannot be a slash after '/vagrant' as in '/vagrant/'
