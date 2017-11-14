@@ -3,11 +3,12 @@
 PLAYBOOK=$1
 
 # Update apt cache (if old)
-last_update=$(stat -c %Y /var/cache/apt/pkgcache.bin)
-now=$(date +%s)
-if [ $((now - last_update)) -gt 84600 ]; then
-  apt-get update
-fi
+#last_update=$(stat -c %Y /var/cache/apt/pkgcache.bin)
+#now=$(date +%s)
+#if [ $((now - last_update)) -gt 84600 ]; then
+#  apt-get update
+#fi
+apt-get update
 
 # Install Ansible (if required)
 if ! [ -x "$(command -v ansible)" ]; then
