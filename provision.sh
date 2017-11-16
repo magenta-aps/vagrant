@@ -19,6 +19,17 @@ if ! [ -x "$(command -v git)" ]; then
     apt-get install -y git
 fi
 
+# Install NodeJS (if required)
+if ! [ -x "$(command -v node)" ]; then
+    apt-get install -y curl
+    curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+    apt-get install -y nodejs
+fi
+
+# Update NPM
+npm update
+npm install npm@latest -g
+
 # Ansible variables
 ROLES_PATH=/vagrant/ansible/roles/ 
 REQUIREMENTS_PATH=/vagrant/ansible/requirements.yml
