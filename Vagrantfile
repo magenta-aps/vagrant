@@ -4,6 +4,7 @@
 provisioner=(ENV['PROVISIONER'] || 'shell')
 playbook=(ENV['PLAYBOOK'] || 'default.yml')
 migrate_disk=(ENV['MIGRATE_DISK'])
+forward_port=(ENV['FORWARD_PORT'])
 
 box_image=(ENV['BOX_NAME'] || 'debian/stretch64')
 box_version=(ENV['BOX_VERSION'] || '9.1.0')
@@ -23,7 +24,9 @@ Vagrant.configure("2") do |config|
   #    :type => "bridge"
   
   # Always forward 8000-->8000
-  config.vm.network "forwarded_port", guest: 8000, host: 8000
+  if forward_port then
+      config.vm.network "forwarded_port", guest: 8000, host: 8000
+  end
 
   # Disable the current vagrant mount and enable '..' instead.
   # Note: There cannot be a slash after '/vagrant' as in '/vagrant/'
