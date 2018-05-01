@@ -75,6 +75,19 @@ If you wish to rerun the provisioning (Shell/Ansible), it can be done using:
     vagrant provision
 
 
+### Binding ports
+
+By default, no port forwards are made, however the default portforward;
+
+    8000 --> 8000
+
+Can be made, by enabling this when calling the `vagrant up` command.
+This can be with the `FORWARD_PORT` environmental variable.
+The variable does not hold anything meaningful at this time;
+
+    FORWARD_PORT=1 vagrant up
+
+
 ### Increasing disk space:
 
 When utilizing the VirtualBox provider, a tiny amount of diskspace is provided.
