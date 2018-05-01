@@ -11,7 +11,9 @@ fi
 
 # Install Ansible (if required)
 if ! [ -x "$(command -v ansible)" ]; then
-    apt-get install -y ansible
+    echo "deb http://ftp.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/strecth-backports.list
+    apt-get update
+    apt-get install -t stretch-backports -y ansible
 fi
 
 # Install git (if required)
@@ -25,10 +27,10 @@ REQUIREMENTS_PATH=/vagrant/ansible/requirements.yml
 PLAYBOOK_PATH=/vagrant/ansible/playbooks/$PLAYBOOK
 
 # Install the playbook requirements
-ANSIBLE_ROLES_PATH=$ROLES_PATH PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true \
+ANSIBLE_STDOUT_CALLBACK=debug ANSIBLE_ROLES_PATH=$ROLES_PATH PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true \
 ansible-galaxy install -r $REQUIREMENTS_PATH
 
 # Run the playbook
 cd /vagrant/
-ANSIBLE_ROLES_PATH=$ROLES_PATH PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true \
+ANSIBLE_STDOUT_CALLBACK=debug ANSIBLE_ROLES_PATH=$ROLES_PATH PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true \
 ansible-playbook --timeout=30 -vv -i "localhost," -c local $PLAYBOOK_PATH
