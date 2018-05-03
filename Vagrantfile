@@ -94,11 +94,11 @@ Vagrant.configure("2") do |config|
       ansible.call override
   end
 
-  config.vm.provider :lxc do |_, override|
+  config.vm.provider :libvirt do |_, override|
       ansible.call override
   end
 
-  config.vm.provider :libvirt do |_, override|
+  config.vm.provider :lxc do |_, override|
       ansible.call override
   end
 
