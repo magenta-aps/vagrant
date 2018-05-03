@@ -4,6 +4,10 @@
 provisioner=(ENV['PROVISIONER'] || 'shell')
 playbook=(ENV['PLAYBOOK'] || 'default.yml')
 migrate_disk=(ENV['MIGRATE_DISK'])
+forward_port=(ENV['FORWARD_PORT'])
+
+box_image=(ENV['BOX_NAME'] || 'debian/stretch64')
+box_version=(ENV['BOX_VERSION'] || '9.1.0')
 
 if migrate_disk && Integer(migrate_disk) < 10 then
   raise Vagrant::Errors::VagrantError.new,
@@ -12,15 +16,17 @@ end
 
 Vagrant.configure("2") do |config|
   # TODO: Ubuntu Xenial image
-  config.vm.box = "debian/stretch64"
-  config.vm.box_version = "9.1.0"
+  config.vm.box = box_image
+  config.vm.box_version = box_version
   #config.vm.network :public_network,
   #    :dev => "virbr0",
   #    :mode => "bridge",
   #    :type => "bridge"
   
   # Always forward 8000-->8000
-  config.vm.network "forwarded_port", guest: 8000, host: 8000
+  if forward_port then
+      config.vm.network "forwarded_port", guest: 8000, host: 8000
+  end
 
   # Disable the current vagrant mount and enable '..' instead.
   # Note: There cannot be a slash after '/vagrant' as in '/vagrant/'
@@ -47,6 +53,7 @@ Vagrant.configure("2") do |config|
       elsif provisioner == 'ansible' then
           vagrant_root = File.dirname(__FILE__)
           ENV['ANSIBLE_ROLES_PATH'] = "#{vagrant_root}/../ansible/roles"
+          ENV['ANSIBLE_STDOUT_CALLBACK'] = 'debug'
 
           config.vm.provision :ansible do |ansible|
             ansible.galaxy_role_file = '../ansible/requirements.yml'
@@ -89,5 +96,14 @@ Vagrant.configure("2") do |config|
 
   config.vm.provider :lxc do |_, override|
       ansible.call override
+  end
+
+  config.vm.provider :libvirt do |_, override|
+      ansible.call override
+  end
+
+  config.vm.provider :lxc do |lxc|
+    # Required to boot nested containers
+    lxc.customize 'aa_profile', 'unconfined'
   end
 end
