@@ -106,4 +106,9 @@ Vagrant.configure("2") do |config|
     # Required to boot nested containers
     lxc.customize 'aa_profile', 'unconfined'
   end
+
+  config.vm.provider :libvirt do |libvirt|
+      libvirt.cpus = 4
+      libvirt.memory = 4092
+  end
 end
