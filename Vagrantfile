@@ -33,6 +33,8 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder ".", "/vagrant", disabled: true
   config.vm.synced_folder "..", "/vagrant"
 
+  config.ssh.forward_agent = true
+
   # Provision
   # ---------
   # Primarily uses shell-->ansible, but can use ansible directly
