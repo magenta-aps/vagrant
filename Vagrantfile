@@ -4,7 +4,7 @@
 provisioner=(ENV['PROVISIONER'] || 'shell')
 playbook=(ENV['PLAYBOOK'] || 'default.yml')
 migrate_disk=(ENV['MIGRATE_DISK'])
-forward_port=(ENV['FORWARD_PORT'])
+forward_port=(ENV['FORWARD_PORT'] || True)
 
 box_image=(ENV['BOX_NAME'] || 'debian/stretch64')
 box_version=(ENV['BOX_VERSION'] || '9.1.0')
