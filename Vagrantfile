@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 provisioner=(ENV['PROVISIONER'] || 'shell')
-playbook=(ENV['PLAYBOOK'] || 'default.yml')
+playbook=(ENV['PLAYBOOK'] || 'development.yml')
 migrate_disk=(ENV['MIGRATE_DISK'])
 forward_port=(ENV['FORWARD_PORT'] || true)
 
@@ -110,7 +110,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provider :libvirt do |libvirt|
-      libvirt.cpus = 4
+      libvirt.cpus = 8
       libvirt.memory = 4092
   end
 end
