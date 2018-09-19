@@ -106,7 +106,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provider :lxc do |lxc|
     # Required to boot nested containers
-    lxc.customize 'aa_profile', 'unconfined'
+    lxc.customize 'apparmor.profile', 'unconfined'
   end
 
   config.vm.provider :libvirt do |libvirt|
