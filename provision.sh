@@ -1,6 +1,7 @@
 #!/bin/bash
 
 PLAYBOOK=$1
+BOX_IMAGE=$2
 
 # Update apt cache (if old)
 last_update=$(stat -c %Y /var/cache/apt/pkgcache.bin)
@@ -11,9 +12,21 @@ fi
 
 # Install Ansible (if required)
 if ! [ -x "$(command -v ansible)" ]; then
-    echo "deb http://ftp.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/strecth-backports.list
-    apt-get update
-    apt-get install -t stretch-backports -y ansible
+    if [  $BOX_IMAGE = 'ubuntu/bionic64' ]; then
+        # Ubuntu
+        apt-get install software-properties-common
+        apt-add-repository ppa:ansible/ansible
+        apt-get update
+        apt-get install -y ansible
+    elif [ $BOX_IMAGE = 'debian/stretch64' ]; then
+        # Debian
+        echo "deb http://ftp.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/strecth-backports.list
+        apt-get update
+        apt-get install -t stretch-backports -y ansible
+    else
+        echo "error in provision.sh : Cannot install ansible, because the box_image($BOX_IMAGE) is unknown, please add an entry in provision.sh with installation instructions for the given image"
+        exit 1
+    fi
 fi
 
 # Install git (if required)
@@ -22,7 +35,7 @@ if ! [ -x "$(command -v git)" ]; then
 fi
 
 # Ansible variables
-ROLES_PATH=/vagrant/ansible/roles/ 
+ROLES_PATH=/vagrant/ansible/roles/
 REQUIREMENTS_PATH=/vagrant/ansible/requirements.yml
 PLAYBOOK_PATH=/vagrant/ansible/playbooks/$PLAYBOOK
 

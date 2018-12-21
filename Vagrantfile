@@ -47,7 +47,7 @@ Vagrant.configure("2") do |config|
           #config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
           config.vm.provision :shell do |shell|
               shell.path = "provision.sh"
-              shell.args = playbook
+              shell.args = [playbook, box_image]
           end
       # Provision using ansible
       # -----------------------
