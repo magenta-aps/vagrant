@@ -10,10 +10,21 @@ if [ $((now - last_update)) -gt 84600 ]; then
 fi
 
 # Install Ansible (if required)
-if ! [ -x "$(command -v ansible)" ]; then
-    echo "deb http://ftp.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/strecth-backports.list
+if ! [ -x "$(command -v locale-gen)" ]; then
     apt-get update
-    apt-get install -t stretch-backports -y ansible
+    # Install locales package
+    apt-get install -y locales
+    # Uncomment en_US.UTF-8 for inclusion in generation
+    sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen
+    # Generate locale
+    locale-gen
+fi
+
+# Install Ansible (if required)
+if ! [ -x "$(command -v ansible)" ]; then
+    apt-get update
+    apt-get install -y python-pip
+    pip install ansible
 fi
 
 # Install git (if required)
