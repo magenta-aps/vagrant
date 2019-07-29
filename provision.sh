@@ -17,7 +17,7 @@ if ! [ -x "$(command -v ansible)" ]; then
         apt-get install software-properties-common
         apt-add-repository ppa:ansible/ansible
         apt-get update
-        apt-get install -y ansible
+        DEBIAN_FRONTEND=noninteractive apt-get install -y ansible
     elif [ $BOX_IMAGE = 'debian/stretch64' ]; then
         # Debian
         echo "deb http://ftp.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/strecth-backports.list
